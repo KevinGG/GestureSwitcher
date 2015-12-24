@@ -9,6 +9,7 @@ final public class GestureRecognizer {
 
 	private GestureRecognizer() {
 		gesture = WebCamGesture.WEB_CAM_GESTURE;
+		gesture.detectEnvironment();
 	}
 
 	final public void switchByGestureRecognized() {

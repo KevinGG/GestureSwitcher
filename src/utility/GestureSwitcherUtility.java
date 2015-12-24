@@ -1,6 +1,8 @@
 package utility;
 
 import java.awt.event.KeyEvent;
+import org.apache.commons.lang3.*;
+import static utility.ObjectOutputUtility.console;
 
 public class GestureSwitcherUtility {
 	
@@ -12,7 +14,14 @@ public class GestureSwitcherUtility {
 	 * Show the desktop
 	 */
 	public static void showDesktop(){
-		RobotUtility.oncePressKeys(KeyEvent.VK_WINDOWS, KeyEvent.VK_D);
+		if(SystemUtils.IS_OS_MAC || SystemUtils.IS_OS_MAC_OSX){
+			console("MAC OS");
+			RobotUtility.oncePressKeys(KeyEvent.VK_F11);
+		}
+		if(SystemUtils.IS_OS_WINDOWS){
+			console("Windows OS");
+			RobotUtility.oncePressKeys(KeyEvent.VK_WINDOWS, KeyEvent.VK_D);
+		}
 	}
 	
 	/**
