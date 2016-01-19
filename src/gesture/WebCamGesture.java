@@ -10,7 +10,10 @@ final public class WebCamGesture implements Gesture{
 	
 	private static int GT_NONE_ENV_LOWER_BOUND;
 	private static int GT_NONE_ENV_UPPER_BOUND;
-	private static int GT_NONE_ENV_OFFSET = 90000;
+	private static int GT_HAND_LOWERV_BOUND;
+	private static int GT_HAND_UPPER_BOUND;
+	private static final int GT_NONE_ENV_OFFSET = 90000;
+	private static final int GT_HAND_OFFSET = 10000;
 	
 	private Webcam webcam;
 	
@@ -21,6 +24,7 @@ final public class WebCamGesture implements Gesture{
 	@Override
 	public GestureTypes determineGesture() {
 		int avgRgbSum = imgAvgRgbSumCal(webcam.getImage());
+		
 		if(avgRgbSum >= GT_NONE_ENV_UPPER_BOUND + GT_NONE_ENV_OFFSET || avgRgbSum <= GT_NONE_ENV_LOWER_BOUND - GT_NONE_ENV_OFFSET){
 			return GestureTypes.GT_HAND_SWIPE_DOWN;
 		}else{
@@ -41,9 +45,9 @@ final public class WebCamGesture implements Gesture{
 	public void detectEnvironment() {
 		console("Start detecting environment... Please don't do any gestures during this process!");
 		int GT_NONE_ENV_DETECTION_COUNT = 0;
-		final int initAvgRgbSum = imgAvgRgbSumCal(webcam.getImage());
-		GT_NONE_ENV_LOWER_BOUND = initAvgRgbSum;
-		GT_NONE_ENV_UPPER_BOUND = initAvgRgbSum;
+		final int initAvgRgbSumEnv = imgAvgRgbSumCal(webcam.getImage());
+		GT_NONE_ENV_LOWER_BOUND = initAvgRgbSumEnv;
+		GT_NONE_ENV_UPPER_BOUND = initAvgRgbSumEnv;
 		++GT_NONE_ENV_DETECTION_COUNT;
 		for(;GT_NONE_ENV_DETECTION_COUNT <= 10;++GT_NONE_ENV_DETECTION_COUNT){
 			try {
@@ -56,8 +60,30 @@ final public class WebCamGesture implements Gesture{
 				GT_NONE_ENV_UPPER_BOUND = avgRgbSum;
 				continue;
 			}
-			if(avgRgbSum < GT_NONE_ENV_LOWER_BOUND - GT_NONE_ENV_OFFSET){
+			if(avgRgbSum < GT_NONE_ENV_LOWER_BOUND){
 				GT_NONE_ENV_LOWER_BOUND = avgRgbSum;
+				continue;
+			}
+		}
+		console("Please center your palm before the web camera ...");
+		GT_NONE_ENV_DETECTION_COUNT = 0;
+		final int initAvgRgbSumHand = imgAvgRgbSumCal(webcam.getImage());
+		GT_NONE_ENV_LOWER_BOUND = initAvgRgbSumHand;
+		GT_NONE_ENV_UPPER_BOUND = initAvgRgbSumHand;
+		++GT_NONE_ENV_DETECTION_COUNT;
+		for(;GT_NONE_ENV_DETECTION_COUNT <= 10; ++GT_NONE_ENV_DETECTION_COUNT){
+			try{
+				Thread.sleep(500);
+			}catch (InterruptedException e){
+				console("Thread Interrupted Exception!");
+			}
+			final int avgRgbSum = imgAvgRgbSumCal(webcam.getImage());
+			if(avgRgbSum > GT_HAND_UPPER_BOUND){
+				GT_HAND_UPPER_BOUND = avgRgbSum;
+				continue;
+			}
+			if(avgRgbSum < GT_HAND_LOWERV_BOUND){
+				GT_HAND_LOWERV_BOUND = avgRgbSum;
 				continue;
 			}
 		}
@@ -81,5 +107,17 @@ final public class WebCamGesture implements Gesture{
 		}
 		//console(avgRgbSum);
 		return avgRgbSum;
+	}
+	
+	final private int handPixelCount(final BufferedImage image){
+		final int imgWidth = image.getWidth();
+		final int imgHeight = image.getHeight();
+		final int[] imgBuffRgb = image.getRGB(0, 0, imgWidth, imgHeight, null, 0, imgWidth);
+		int handCount = 0;
+		for(int i : imgBuffRgb){
+			Color c = new Color(i);
+			//to do hand count;
+		}
+		return handCount;
 	}
 }
