@@ -15,11 +15,11 @@ public class GestureSwitcherUtility {
 	 */
 	public static void showDesktop(){
 		if(SystemUtils.IS_OS_MAC || SystemUtils.IS_OS_MAC_OSX){
-			console("MAC OS");
+			//console("MAC OS");
 			RobotUtility.oncePressKeys(KeyEvent.VK_F11);
 		}
 		if(SystemUtils.IS_OS_WINDOWS){
-			console("Windows OS");
+			//console("Windows OS");
 			RobotUtility.oncePressKeys(KeyEvent.VK_WINDOWS, KeyEvent.VK_D);
 		}
 	}

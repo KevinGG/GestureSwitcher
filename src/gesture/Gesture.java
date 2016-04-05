@@ -3,8 +3,6 @@ package gesture;
 public interface Gesture {
 	/**
 	 * A naive enumeration definition for gesture types
-	 * @author KevinGG
-	 *
 	 */
 	public enum GestureTypes{
 		GT_NONE,
