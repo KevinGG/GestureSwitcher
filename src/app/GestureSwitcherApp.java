@@ -1,6 +1,7 @@
 package app;
 
 import gesture.GestureRecognizer;
+import utility.GestureSwitcherUtility;
 
 final public class GestureSwitcherApp {
 	public static final GestureSwitcherApp GESTURE_SWITCHER_APP = new GestureSwitcherApp();
@@ -36,10 +37,11 @@ final public class GestureSwitcherApp {
 
 class MainApp {
 	public static void main(String[] argv) throws InterruptedException {
-		GestureSwitcherApp.GESTURE_SWITCHER_APP.startApp();
+		//GestureSwitcherApp.GESTURE_SWITCHER_APP.startApp();
 		for (; !GestureSwitcherApp.GESTURE_SWITCHER_APP.isAppStopped();) {
-			GestureSwitcherApp.GESTURE_SWITCHER_APP.gestureSwitch();
-			Thread.sleep(1000);
+			//GestureSwitcherApp.GESTURE_SWITCHER_APP.gestureSwitch();
+			GestureSwitcherUtility.showDesktop();
+			Thread.sleep(9000);
 			//GestureSwitcherApp.GESTURE_SWITCHER_APP.stopApp();
 		}
 	}
